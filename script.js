@@ -41,3 +41,48 @@ function inititialise() {
 // Inits & Event Listeners
 //
 inititialise();
+
+document.addEventListener("DOMContentLoaded", function() {
+  const todoText = document.getElementById("todo-text");
+  const addButton = document.getElementById("add-button");
+  const todoList = document.getElementById("todo-list");
+
+  addButton.addEventListener("click", addTodo);
+  todoText.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+          addTodo();
+      }
+  });
+
+  todoList.addEventListener("click", function(event) {
+      if (event.target.classList.contains("delete-button")) {
+          deleteTodo(event.target.parentElement);
+      } else if (event.target.classList.contains("select-button")) {
+          toggleCompleted(event.target.parentElement);
+      }
+  });
+
+  function addTodo() {
+      const text = todoText.value.trim();
+      if (text === "") return;
+
+      const todoItem = document.createElement("li");
+      todoItem.classList.add("todo");
+      todoItem.innerHTML = `
+          <span>${text}</span>
+          <button class="select-button">Select</button>
+          <button class="delete-button">Delete</button>
+      `;
+
+      todoList.appendChild(todoItem);
+      todoText.value = "";
+  }
+
+  function deleteTodo(todoItem) {
+      todoItem.remove();
+  }
+
+  function toggleCompleted(todoItem) {
+      todoItem.classList.toggle("completed");
+  }
+});
